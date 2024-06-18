@@ -1,0 +1,189 @@
+<div class="bg-black text-white">
+    <div class="text-center p-4">
+        <h1 class="text-4xl">Crud References</h1>
+    </div>
+    <div role="tablist" class="tabs tabs-lifted">
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Get All" checked />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="overflow-x-auto">
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>lastName</th>
+                            <th>email</th>
+                            <th>address</th>
+                            <th>phone</th>
+                            <th>city</th>
+                            <th>relationship</th>
+                            <th>typeReference</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- If there is an error, show a message -->
+                        <tr *ngIf="error">
+                            <td colspan="10" class="text-center text-red-500">{{ error }}</td>
+                        </tr>
+                        <!-- List all references -->
+                        <tr *ngFor="let info of references">
+                            <td>{{ info.id }}</td>
+                            <td>{{ info.name }}</td>
+                            <td>{{ info.lastName }}</td>
+                            <td>{{ info.email }}</td>
+                            <td>{{ info.address }}</td>
+                            <td>{{ info.phone }}</td>
+                            <td>{{ info.city }}</td>
+                            <td>{{ info.relationship }}</td>
+                            <td>{{ info.typeReference }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary m-2" (click)="selectForEdit(info)">Edit</button>
+                                <button class="btn btn-sm btn-error"
+                                    (click)="deleteReferenceService(info.id)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Create" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body" (ngSubmit)="createReferenceService()">
+                <div class="form-control">
+                    <h2 class="text-lg">Create Reference</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" name="name" placeholder="Name" class="input input-bordered" required
+                                [(ngModel)]="newReference.name">
+                            <label class="label">
+                                <span class="label-text">Last Name</span>
+                            </label>
+                            <input type="text" name="lastName" placeholder="Last Name" class="input input-bordered"
+                                required [(ngModel)]="newReference.lastName">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <input type="email" name="email" placeholder="Email" class="input input-bordered" required
+                                [(ngModel)]="newReference.email">
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" name="address" placeholder="Address" class="input input-bordered"
+                                required [(ngModel)]="newReference.address">
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" name="phone" placeholder="Phone" class="input input-bordered" required
+                                [(ngModel)]="newReference.phone">
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" name="city" placeholder="City" class="input input-bordered" required
+                                [(ngModel)]="newReference.city">
+                            <label class="label">
+                                <span class="label-text">Relationship</span>
+                            </label>
+                            <input type="text" name="relationship" placeholder="Relationship"
+                                class="input input-bordered" required [(ngModel)]="newReference.relationship">
+                            <label class="label">
+                                <span class="label-text">Type Reference</span>
+                            </label>
+                            <input type="text" name="typeReference" placeholder="Type Reference"
+                                class="input input-bordered" required [(ngModel)]="newReference.typeReference">
+                            <label class="label">
+                                <span class="label-text">Personal Information Id</span>
+                            </label>
+                            <input type="number" name="personalInformationId" placeholder="Personal Information Id"
+                                class="input input-bordered" required [(ngModel)]="newReference.personalInformationId">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Create</button>
+                    <button type="button" class="btn btn-error" (click)="cancelCreate()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab Update -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Edit" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6" [hidden]="!editMode">
+            <form class="card-body" (ngSubmit)="updateReferenceService()">
+                <div class="form-control">
+                    <h2 class="text-2xl">Edit Reference Information</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" name="name" placeholder="Name" class="input input-bordered" required
+                                [(ngModel)]="selectedReference.name">
+                            <label class="label">
+                                <span class="label-text">Last Name</span>
+                            </label>
+                            <input type="text" name="lastName" placeholder="Last Name" class="input input-bordered"
+                                required [(ngModel)]="selectedReference.lastName">
+                            <label class="label">
+                                <span class="label-text">Email</span>
+                            </label>
+                            <input type="email" name="email" placeholder="Email" class="input input-bordered" required
+                                [(ngModel)]="selectedReference.email">
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" name="address" placeholder="Address" class="input input-bordered"
+                                required [(ngModel)]="selectedReference.address">
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" name="phone" placeholder="Phone" class="input input-bordered" required
+                                [(ngModel)]="selectedReference.phone">
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" name="city" placeholder="City" class="input input-bordered" required
+                                [(ngModel)]="selectedReference.city">
+                            <label class="label">
+                                <span class="label-text">Relationship</span>
+                            </label>
+                            <input type="text" name="relationship" placeholder="Relationship"
+                                class="input input-bordered" required [(ngModel)]="selectedReference.relationship">
+                            <label class="label">
+                                <span class="label-text">Type Reference</span>
+                            </label>
+                            <input type="text" name="typeReference" placeholder="Type Reference"
+                                class="input input-bordered" required [(ngModel)]="selectedReference.typeReference">
+                            <label class="label">
+                                <span class="label-text">Personal Information Id</span>
+                            </label>
+                            <input type="number" name="personalInformationId" placeholder="Personal Information Id"
+                                class="input input-bordered" required
+                                [(ngModel)]="selectedReference.personalInformationId">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Update</button>
+                    <button type="button" class="btn btn-error" (click)="cancelEdit()">Cancel</button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>

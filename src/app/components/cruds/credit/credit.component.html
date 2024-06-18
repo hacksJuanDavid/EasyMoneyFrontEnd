@@ -1,0 +1,136 @@
+<div class="bg-black text-white">
+    <div class="text-center p-4">
+        <h1 class="text-4xl">Crud Credit</h1>
+    </div>
+    <div role="tablist" class="tabs tabs-lifted">
+        <!-- Tab for Listing All Credits -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Get All" checked />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="overflow-x-auto">
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>lineCredit</th>
+                            <th>creditAmount</th>
+                            <th>creditTerm</th>
+                            <th>description</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- If there is an error, show a message -->
+                        <tr *ngIf="error">
+                            <td colspan="6" class="text-center text-red-500">{{ error }}</td>
+                        </tr>
+                        <!-- List all credits -->
+                        <tr *ngFor="let info of credits">
+                            <td>{{ info.id }}</td>
+                            <td>{{ info.lineCredit }}</td>
+                            <td>{{ info.creditAmount }}</td>
+                            <td>{{ info.creditTerm }}</td>
+                            <td>{{ info.description }}</td>
+                            <!-- Botones de acción -->
+                            <button class="btn btn-sm btn-primary m-2" (click)="selectForEdit(info)">Edit</button>
+                            <button class="btn btn-sm btn-error" (click)="deleteCredit(info.id)">Delete</button>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab for Creating a New Credit -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Create" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body" (ngSubmit)="createCredit()">
+                <div class="form-control">
+                    <h2 class="text-lg">Create Credit</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Line Credit</span>
+                            </label>
+                            <input type="text" name="lineCredit" placeholder="Line Credit" class="input input-bordered"
+                                required [(ngModel)]="newCredit.lineCredit">
+                            <label class="label">
+                                <span class="label-text">Credit Amount</span>
+                            </label>
+                            <input type="number" name="creditAmount" placeholder="Credit Amount"
+                                class="input input-bordered" required [(ngModel)]="newCredit.creditAmount">
+                            <label class="label">
+                                <span class="label-text">Credit Term</span>
+                            </label>
+                            <input type="text" name="creditTerm" placeholder="Credit Term" class="input input-bordered"
+                                required [(ngModel)]="newCredit.creditTerm">
+                            <label class="label">
+                                <span class="label-text">Description</span>
+                            </label>
+                            <textarea name="description" placeholder="Description" class="textarea textarea-bordered"
+                                required [(ngModel)]="newCredit.description"></textarea>
+                            <label class="label">
+                                <span class="label-text">Personal Information Id</span>
+                            </label>
+                            <input type="number" name="personalInformationId" placeholder="Personal Information Id"
+                                class="input input-bordered" required [(ngModel)]="newCredit.personalInformationId">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Create</button>
+                    <button type="button" class="btn btn-error" (click)="cancelCreate()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab for Editing a Credit -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Edit" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body" (ngSubmit)="updateCredit()">
+                <div class="form-control">
+                    <h2 class="text-lg">Edit Credit</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Line Credit</span>
+                            </label>
+                            <input type="text" name="lineCredit" placeholder="Line Credit" class="input input-bordered"
+                                [(ngModel)]="selectedCredit.lineCredit">
+                            <label class="label">
+                                <span class="label-text
+                                ">Credit Amount</span>
+                            </label>
+                            <input type="number" name="creditAmount" placeholder="Credit Amount"
+                                class="input input-bordered" [(ngModel)]="selectedCredit.creditAmount">
+
+                            <label class="label">
+                                <span class="label-text">Credit Term</span>
+                            </label>
+                            <input type="text" name="creditTerm" placeholder="Credit Term" class="input input-bordered"
+                                [(ngModel)]="selectedCredit.creditTerm">
+                            <label class="label">
+                                <span class="label-text">Description</span>
+                            </label>
+                            <textarea name="description" placeholder="Description" class="textarea textarea-bordered"
+                                [(ngModel)]="selectedCredit.description"></textarea>
+                            <label class="label">
+                                <span class="label-text">Personal Information Id</span>
+                            </label>
+                            <input type="number" name="personalInformationId" placeholder="Personal Information Id"
+                                class="input input-bordered" [(ngModel)]="selectedCredit.personalInformationId">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Update</button>
+                    <button type="button" class="btn btn-error" (click)="cancelEdit()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

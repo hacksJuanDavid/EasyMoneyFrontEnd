@@ -1,0 +1,81 @@
+<div class="bg-black text-white">
+    <div class="text-center p-4">
+        <h1 class="text-4xl">Crud Credit Lines</h1>
+    </div>
+    <div role="tablist" class="tabs tabs-lifted">
+        <!-- Tab for Listing All Credit Lines -->
+        <input type="radio" name="creditline_tabs" role="tab" class="tab text-white" aria-label="Get All" checked />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="overflow-x-auto">
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>name</th>
+                            <th>minAmount</th>
+                            <th>maxAmount</th>
+                            <th>maxTerm</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- If there is an error, show a message -->
+                        <tr *ngIf="error">
+                            <td colspan="6" class="text-center text-red-500">{{ error }}</td>
+                        </tr>
+                        <!-- List all credit lines -->
+                        <tr *ngFor="let creditLine of creditLines">
+                            <td>{{ creditLine.id }}</td>
+                            <td>{{ creditLine.name }}</td>
+                            <td>{{ creditLine.minAmount }}</td>
+                            <td>{{ creditLine.maxAmount }}</td>
+                            <td>{{ creditLine.maxTerm }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary m-2">Edit</button>
+                                <button class="btn btn-sm btn-error">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab for Creating a New Credit Line -->
+        <input type="radio" name="creditline_tabs" role="tab" class="tab text-white" aria-label="Create" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body">
+                <div class="form-control">
+                    <h2 class="text-lg">Create Credit Line</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" name="name" placeholder="Name" class="input input-bordered" required>
+                            <label class="label">
+                                <span class="label-text">Min Amount</span>
+                            </label>
+                            <input type="number" name="minAmount" placeholder="Min Amount" class="input input-bordered"
+                                required>
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Max Amount</span>
+                            </label>
+                            <input type="number" name="maxAmount" placeholder="Max Amount" class="input input-bordered"
+                                required>
+                            <label class="label">
+                                <span class="label-text">Max Term</span>
+                            </label>
+                            <input type="text" name="maxTerm" placeholder="Max Term" class="input input-bordered"
+                                required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-control mt-6">
+                    <button class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

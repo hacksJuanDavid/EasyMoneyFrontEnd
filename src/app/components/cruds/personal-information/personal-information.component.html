@@ -1,0 +1,212 @@
+<div class="bg-black text-white">
+    <div class="text-center p-4">
+        <h1 class="text-4xl">Crud Personal Information</h1>
+    </div>
+    <div role="tablist" class="tabs tabs-lifted">
+        <!-- Tab Get All -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Get All" checked />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="overflow-x-auto">
+                <table class="table table-compact">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>typeDocument</th>
+                            <th>documentNumber</th>
+                            <th>name</th>
+                            <th>lastName</th>
+                            <th>residence</th>
+                            <th>city</th>
+                            <th>phone</th>
+                            <th>workingInformation</th>
+                            <th>reference</th>
+                            <th>credit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Si existe un error, muestra un mensaje -->
+                        <tr *ngIf="error">
+                            <td colspan="12" class="text-center text-red-500">{{ error }}</td>
+                        </tr>
+                        <!-- Itera sobre cada información personal y muestra los detalles -->
+                        <tr *ngFor="let info of personalInformations">
+                            <td>{{ info.id }}</td>
+                            <td>{{ info.typeDocument }}</td>
+                            <td>{{ info.documentNumber }}</td>
+                            <td>{{ info.name }}</td>
+                            <td>{{ info.lastName }}</td>
+                            <td>{{ info.residence }}</td>
+                            <td>{{ info.city }}</td>
+                            <td>{{ info.phone }}</td>
+                            <td>
+                                <!-- Detalles de workingInformation -->
+                                <details>
+                                    <summary>{{ info.workingInformation?.nameCompany }}</summary>
+                                    <p *ngIf="info.workingInformation"><strong>NIT:</strong> {{
+                                        info.workingInformation.nitCompany }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>Address:</strong> {{
+                                        info.workingInformation.address }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>City:</strong> {{
+                                        info.workingInformation.city }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>Phone:</strong> {{
+                                        info.workingInformation.phone }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>Position:</strong> {{
+                                        info.workingInformation.position }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>Salary:</strong> {{
+                                        info.workingInformation.salary }}</p>
+                                    <p *ngIf="info.workingInformation"><strong>Date Admission:</strong> {{
+                                        info.workingInformation.dateAdmission }}</p>
+                                </details>
+                            </td>
+                            <td>
+                                <!-- Detalles de reference -->
+                                <details *ngFor="let ref of info.reference">
+                                    <summary>{{ ref.name }} {{ ref.lastName }}</summary>
+                                    <p><strong>Email:</strong> {{ ref.email }}</p>
+                                    <p><strong>Address:</strong> {{ ref.address }}</p>
+                                    <p><strong>Phone:</strong> {{ ref.phone }}</p>
+                                    <p><strong>City:</strong> {{ ref.city }}</p>
+                                    <p><strong>Relationship:</strong> {{ ref.relationship }}</p>
+                                    <p><strong>Type Reference:</strong> {{ ref.typeReference }}</p>
+                                </details>
+                            </td>
+                            <td>
+                                <!-- Detalles de credit -->
+                                <details *ngFor="let cred of info.credit">
+                                    <summary>{{ cred.lineCredit }}</summary>
+                                    <p><strong>Credit Amount:</strong> {{ cred.creditAmount }}</p>
+                                    <p><strong>Credit Term:</strong> {{ cred.creditTerm }}</p>
+                                    <p><strong>Description:</strong> {{ cred.description }}</p>
+                                </details>
+                            </td>
+                            <td>
+                                <!-- Botones de acción -->
+                                <button class="btn btn-sm btn-primary m-2" (click)="selectForEdit(info)">Edit</button>
+                                <button class="btn btn-sm btn-error"
+                                    (click)="deletePersonalInformationService(info.id)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Create -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Create" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body" (ngSubmit)="createPersonalInformationService()">
+                <div class="form-control">
+                    <h2 class="text-lg">Create Personal Information</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Type Document</span>
+                            </label>
+                            <input type="text" placeholder="Type Document" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.typeDocument" name="typeDocument">
+                            <label class="label">
+                                <span class="label-text">Document Number</span>
+                            </label>
+                            <input type="number" placeholder="Document Number" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.documentNumber" name="documentNumber">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" placeholder="Name" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.name" name="name">
+                            <label class="label">
+                                <span class="label-text">Last Name</span>
+                            </label>
+                            <input type="text" placeholder="Last Name" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.lastName" name="lastName">
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Residence</span>
+                            </label>
+                            <input type="text" placeholder="Residence" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.residence" name="residence">
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" placeholder="City" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.city" name="city">
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" placeholder="Phone" class="input input-bordered"
+                                [(ngModel)]="newPersonalInformation.phone" name="phone">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Create</button>
+                    <button type="button" class="btn btn-error" (click)="cancelCreate()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab Edit -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Edit" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6" [hidden]="!editMode">
+            <form class="card-body" (ngSubmit)="updatePersonalInformationService()">
+                <div class="form-control">
+                    <h2 class="text-lg">Edit Personal Information</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Type Document</span>
+                            </label>
+                            <input type="text" placeholder="Type Document" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.typeDocument" name="typeDocument">
+                            <label class="label">
+                                <span class="label-text">Document Number</span>
+                            </label>
+                            <input type="number" placeholder="Document Number" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.documentNumber" name="documentNumber">
+                            <label class="label">
+                                <span class="label-text">Name</span>
+                            </label>
+                            <input type="text" placeholder="Name" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.name" name="name">
+                            <label class="label">
+                                <span class="label-text">Last Name</span>
+                            </label>
+                            <input type="text" placeholder="Last Name" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.lastName" name="lastName">
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Residence</span>
+                            </label>
+                            <input type="text" placeholder="Residence" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.residence" name="residence">
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" placeholder="City" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.city" name="city">
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" placeholder="Phone" class="input input-bordered"
+                                [(ngModel)]="selectedPersonalInformation.phone" name="phone">
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Update</button>
+                    <button type="button" class="btn btn-error" (click)="cancelEdit()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

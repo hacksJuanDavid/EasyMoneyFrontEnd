@@ -1,0 +1,9 @@
+<div class="bg-black text-white">
+    <!-- Componentes dinámicos según la selección -->
+    <app-personal-information *ngIf="componentToShow === 'personal-information'"></app-personal-information>
+    <app-workin-information *ngIf="componentToShow === 'working-information'"></app-workin-information>
+    <app-reference *ngIf="componentToShow === 'reference'"></app-reference>
+    <app-credit *ngIf="componentToShow === 'credit'"></app-credit>
+    <app-credit-line *ngIf="componentToShow === 'credit-line'"></app-credit-line>
+  </div>
+  

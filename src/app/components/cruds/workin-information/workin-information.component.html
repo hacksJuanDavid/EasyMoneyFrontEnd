@@ -1,0 +1,188 @@
+<div class="bg-black text-white">
+    <div class="text-center p-4">
+        <h1 class="text-4xl">Crud Working Information</h1>
+    </div>
+    <!-- Tab Get All -->
+    <div role="tablist" class="tabs tabs-lifted">
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Get All" checked />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <div class="overflow-x-auto">
+                <table class="table table-compact">
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>nameCompany</th>
+                            <th>nitCompany</th>
+                            <th>address</th>
+                            <th>city</th>
+                            <th>phone</th>
+                            <th>position</th>
+                            <th>salary</th>
+                            <th>dateAdmission</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngIf="error">
+                            <td colspan="10" class="text-center text-red-500">{{ error }}</td>
+                        </tr>
+                        <tr *ngFor="let info of workingInformations">
+                            <td>{{ info.id }}</td>
+                            <td>{{ info.nameCompany }}</td>
+                            <td>{{ info.nitCompany }}</td>
+                            <td>{{ info.address }}</td>
+                            <td>{{ info.city }}</td>
+                            <td>{{ info.phone }}</td>
+                            <td>{{ info.position }}</td>
+                            <td>{{ info.salary }}</td>
+                            <td>{{ info.dateAdmission }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary m-2" (click)="selectForEdit(info)">Edit</button>
+                                <button class="btn btn-sm btn-error"
+                                    (click)="deleteWorkingInformationService(info.id)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab Create -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Create" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <form class="card-body" (ngSubmit)="createWorkingInformationService()">
+                <div class="form-control">
+                    <h2 class="text-2xl">Create Working Information</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">NIT Company</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="NIT Company"
+                                [(ngModel)]="newWorkingInformation.nitCompany" name="nitCompany" />
+                            <label class="label">
+                                <span class="label-text">Name Company</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Name Company"
+                                [(ngModel)]="newWorkingInformation.nameCompany" name="nameCompany" />
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Address"
+                                [(ngModel)]="newWorkingInformation.address" name="address" />
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="City"
+                                [(ngModel)]="newWorkingInformation.city" name="city" />
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Phone"
+                                [(ngModel)]="newWorkingInformation.phone" name="phone" />
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Position</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Position"
+                                [(ngModel)]="newWorkingInformation.position" name="position" />
+                            <label class="label">
+                                <span class="label-text">Salary</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="Salary"
+                                [(ngModel)]="newWorkingInformation.salary" name="salary" />
+                            <label class="label">
+                                <span class="label-text">Date Admission</span>
+                            </label>
+                            <input type="date" class="input input-bordered" placeholder="Date Admission"
+                                [(ngModel)]="newWorkingInformation.dateAdmission" name="dateAdmission" />
+                            <label class="label">
+                                <span class="label-text mt-2">Personal Information Id</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="Personal Information Id"
+                                [(ngModel)]="newWorkingInformation.personalInformationId"
+                                name="personalInformationId" />
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Create</button>
+                    <button type="button" class="btn btn-error" (click)="cancelCreate()">Cancel</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Tab Update -->
+        <input type="radio" name="my_tabs_2" role="tab" class="tab text-white" aria-label="Edit" />
+        <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6" [hidden]="!editMode">
+            <form class="card-body" (ngSubmit)="updateWorkingInformationService()">
+                <div class="form-control">
+                    <h2 class="text-2xl">Create Working Information</h2>
+                    <div class="flex flex-row-2">
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">NIT Company</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="NIT Company"
+                                [(ngModel)]="selectedWorkingInformation.nitCompany" name="nitCompany" />
+                            <label class="label">
+                                <span class="label-text">Name Company</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Name Company"
+                                [(ngModel)]="selectedWorkingInformation.nameCompany" name="nameCompany" />
+                            <label class="label">
+                                <span class="label-text">Address</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Address"
+                                [(ngModel)]="selectedWorkingInformation.address" name="address" />
+                            <label class="label">
+                                <span class="label-text">City</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="City"
+                                [(ngModel)]="selectedWorkingInformation.city" name="city" />
+                            <label class="label">
+                                <span class="label-text">Phone</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Phone"
+                                [(ngModel)]="selectedWorkingInformation.phone" name="phone" />
+                        </div>
+                        <div class="flex flex-col m-2">
+                            <label class="label">
+                                <span class="label-text">Position</span>
+                            </label>
+                            <input type="text" class="input input-bordered" placeholder="Position"
+                                [(ngModel)]="selectedWorkingInformation.position" name="position" />
+                            <label class="label">
+                                <span class="label-text">Salary</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="Salary"
+                                [(ngModel)]="selectedWorkingInformation.salary" name="salary" />
+                            <label class="label">
+                                <span class="label-text">Date Admission</span>
+                            </label>
+                            <input type="date" class="input input-bordered" placeholder="Date Admission"
+                                [(ngModel)]="selectedWorkingInformation.dateAdmission" name="dateAdmission" />
+                            <label class="label">
+                                <span class="label-text mt-2">Personal Information Id</span>
+                            </label>
+                            <input type="number" class="input input-bordered" placeholder="Personal Information Id"
+                                [(ngModel)]="selectedWorkingInformation.personalInformationId"
+                                name="personalInformationId" />
+                        </div>
+                    </div>
+                    <div *ngIf="success" class="alert alert-success">
+                        <span>{{ success }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-row form-control">
+                    <button type="submit" class="btn btn-primary mr-4">Update</button>
+                    <button type="button" class="btn btn-error" (click)="cancelEdit()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
